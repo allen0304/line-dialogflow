@@ -1,0 +1,36 @@
+{
+  "name": "@allen0304/line-dialogflow",
+  "engines": {
+    "node": ">=8"
+  },
+  "version": "1.0.0",
+  "description": "Link LINE webhook with Dialogflow",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/allen0304/line-dialogflow.git"
+  },
+  "keywords": [],
+  "author": {
+    "name": "Allen",
+    "email": "allen0304@me.com",
+    "url": "https://github.com/allen0304"
+  },
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/allen0304/line-dialogflow/issues"
+  },
+  "homepage": "https://github.com/allen0304/line-dialogflow#readme",
+  "devDependencies": {
+    "typescript": "^3.7.4"
+  },
+  "dependencies": {
+    "@line/bot-sdk": "^6.8.4",
+    "dialogflow": "^1.1.0",
+    "lodash": "^4.17.15",
+    "pb-util": "^0.1.2"
+  }
+}
