@@ -25,14 +25,12 @@ interface DialogflowConfig {
 
 export default class LineDialogflow {
 
+  private projectId: string;
   private lineClient: Client;
   private dialogflowClient: any;
-  private lineConfig: LineConfig;
-  private dialogflowConfig: DialogflowConfig;
 
   constructor(lineConfig: LineConfig, dialogflowConfig: DialogflowConfig) {
-    this.lineConfig = lineConfig;
-    this.dialogflowConfig = dialogflowConfig;
+    this.projectId = dialogflowConfig.projectId;
     this.lineClient = new Client(lineConfig);
     this.dialogflowClient = new dialogflow.SessionsClient(dialogflowConfig);
   }
@@ -46,7 +44,8 @@ export default class LineDialogflow {
     console.log('line-webhook headers:', JSON.stringify(req.headers));
     console.log('line-webhook body = ', JSON.stringify(req.body));
     const userId = req.body.events[0].source.userId;
-    // line webhook 驗證用, 更新 channels
+    
+    // line webhook 驗證用
     if (userId === 'Udeadbeefdeadbeefdeadbeefdeadbeef') {
       res.end();
     }
@@ -186,7 +185,7 @@ export default class LineDialogflow {
    */
   private replyTextIntent(event: any): Promise<any> {
     const sessionId = event.source.userId;
-    const sessionPath = this.dialogflowClient.sessionPath(this.dialogflowConfig.projectId, sessionId);
+    const sessionPath = this.dialogflowClient.sessionPath(this.projectId, sessionId);
     const text = event.message.text;
     const request = {
       session: sessionPath,
@@ -220,7 +219,7 @@ export default class LineDialogflow {
    */
   private replyEventIntent(event: any, eventName: string, params: any = {}): Promise<any> {
     const sessionId = event.source.userId;
-    const sessionPath = this.dialogflowClient.sessionPath(this.dialogflowConfig.projectId, sessionId);
+    const sessionPath = this.dialogflowClient.sessionPath(this.projectId, sessionId);
     const request = {
       session: sessionPath,
       queryParams: {
