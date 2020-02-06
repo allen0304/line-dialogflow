@@ -1,2 +1,2 @@
 # line-dialogflow
-Link LINE webhook with Dialogflow
+NPM Package for linking LINE webhook with Dialogflow
