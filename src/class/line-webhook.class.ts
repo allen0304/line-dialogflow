@@ -1,4 +1,9 @@
-import { Client, Message } from '@line/bot-sdk';
+import { Request, Response } from 'express';
+import {
+  Client, Message, FollowEvent, MessageEvent, UnfollowEvent,
+  JoinEvent, LeaveEvent, PostbackEvent,
+  WebhookEvent, BeaconEvent
+} from '@line/bot-sdk';
 import * as dialogflow from 'dialogflow';
 import { struct } from 'pb-util';
 import * as _ from 'lodash';
@@ -35,7 +40,7 @@ export default class LineDialogflow {
     this.dialogflowClient = new dialogflow.SessionsClient(dialogflowConfig);
   }
 
-  public async lineWebhook(req, res) {
+  public async lineWebhook(req: Request, res: Response) {
     if (req.method === 'GET') {
       res.send('line webhook cold start');
       return null;
@@ -44,7 +49,7 @@ export default class LineDialogflow {
     console.log('line-webhook headers:', JSON.stringify(req.headers));
     console.log('line-webhook body = ', JSON.stringify(req.body));
     const userId = req.body.events[0].source.userId;
-    
+
     // line webhook 驗證用
     if (userId === 'Udeadbeefdeadbeefdeadbeefdeadbeef') {
       res.end();
@@ -59,7 +64,7 @@ export default class LineDialogflow {
       });
   };
 
-  private async handleEvent(event) {
+  private async handleEvent(event: WebhookEvent) {
     console.log('event:', event);
     switch (event.type) {
       case 'message':
@@ -112,57 +117,58 @@ export default class LineDialogflow {
     }
   }
 
-  handleText(event: any): Promise<any> {
+  protected async handleText(event: MessageEvent): Promise<any> {
     return this.replyTextIntent(event);
   }
 
-  handleImage(event): Promise<any> {
+  protected async handleImage(event): Promise<any> {
     return this.replyText(event.replyToken, `收到`)
   }
 
-  handleVideo(event): Promise<any> {
+  protected async handleVideo(event): Promise<any> {
     return this.replyText(event.replyToken, `收到`)
   }
 
-  handleAudio(event): Promise<any> {
+  protected async handleAudio(event): Promise<any> {
     return this.replyText(event.replyToken, `收到`)
   }
 
-  handleFile(event): Promise<any> {
+  protected async handleFile(event): Promise<any> {
     return this.replyText(event.replyToken, `收到`)
   }
 
-  handleLocation(event): Promise<any> {
+  protected async handleLocation(event): Promise<any> {
     return this.replyText(event.replyToken, `收到`)
   }
 
-  handleSticker(event): Promise<any> {
+  protected async handleSticker(event): Promise<any> {
     return this.replyText(event.replyToken, `收到`)
   }
 
-  handleFollow(event: any) {
+  protected async handleFollow(event: FollowEvent) {
     return this.replyEventIntent(event, 'Welcome');
   };
 
-  handleUnfollow(event: any) {
+  protected async handleUnfollow(event: UnfollowEvent) {
     console.log(`被封鎖： ${JSON.stringify(event)}`);
     return;
   };
 
-  handleJoin(event: any) {
+  protected async handleJoin(event: JoinEvent) {
     return this.replyText(event.replyToken, `Joined ${event.source.type}`);
   }
 
-  handleLeave(event: any) {
-    return this.replyText(event.replyToken, `Left ${event.source.type}`);
+  protected async handleLeave(event: LeaveEvent) {
+    console.log(`Left ${event.source.type}`);
+    return null;
   }
 
-  handlePostback(event: any) {
+  protected async handlePostback(event: PostbackEvent) {
     console.log(`postback: ${JSON.stringify(event)}`);
     return;
   }
 
-  handleBeacon(event: any) {
+  protected async handleBeacon(event: BeaconEvent) {
     return this.replyText(event.replyToken, `Got beacon: ${event.beacon.hwid}`);
   }
 
