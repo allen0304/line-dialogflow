@@ -54,18 +54,19 @@ export default class LineDialogflow {
     if (userId === 'Udeadbeefdeadbeefdeadbeefdeadbeef') {
       res.end();
     }
-
-    return Promise.all(req.body.events.map(this.handleEvent))
+    
+    return Promise.all(_.map(req.body.events, this.handleEvent))
       .then(() => {
         res.end();
-      }).catch((err) => {
-        console.error(err);
-        res.status(500).end();
+      })
+      .catch((err) => {
+      console.error(err);
+      res.status(500).end();
       });
   };
 
-  private async handleEvent(event: WebhookEvent) {
-    console.log('event:', event);
+  private handleEvent = async (event: WebhookEvent) => {
+    console.log('event:', JSON.stringify(event));
     switch (event.type) {
       case 'message':
         const message = event.message;
@@ -115,63 +116,63 @@ export default class LineDialogflow {
       default:
         throw new Error(`Unknown event: ${JSON.stringify(event)}`);
     }
-  }
+  };
 
-  protected async handleText(event: MessageEvent): Promise<any> {
-    console.log('text', event);
+  protected handleText = async (event: MessageEvent): Promise<any> => {
+    console.log('text', JSON.stringify(event));
     return this.replyTextIntent(event);
-  }
+  };
 
-  protected async handleImage(event): Promise<any> {
-    return this.replyText(event.replyToken, `收到`)
-  }
+  protected handleImage = async (event): Promise<any> => {
+    return this.replyText(event.replyToken, `收到`);
+  };
 
-  protected async handleVideo(event): Promise<any> {
-    return this.replyText(event.replyToken, `收到`)
-  }
+  protected handleVideo = async (event): Promise<any> => {
+    return this.replyText(event.replyToken, `收到`);
+  };
 
-  protected async handleAudio(event): Promise<any> {
-    return this.replyText(event.replyToken, `收到`)
-  }
+  protected handleAudio = async (event): Promise<any> => {
+    return this.replyText(event.replyToken, `收到`);
+  };
 
-  protected async handleFile(event): Promise<any> {
-    return this.replyText(event.replyToken, `收到`)
-  }
+  protected handleFile = async (event): Promise<any> => {
+    return this.replyText(event.replyToken, `收到`);
+  };
 
-  protected async handleLocation(event): Promise<any> {
-    return this.replyText(event.replyToken, `收到`)
-  }
+  protected handleLocation = async (event): Promise<any> => {
+    return this.replyText(event.replyToken, `收到`);
+  };
 
-  protected async handleSticker(event): Promise<any> {
-    return this.replyText(event.replyToken, `收到`)
-  }
+  protected handleSticker = async (event): Promise<any> => {
+    return this.replyText(event.replyToken, `收到`);
+  };
 
-  protected async handleFollow(event: FollowEvent) {
+  protected handleFollow = async (event: FollowEvent) => {
     return this.replyEventIntent(event, 'Welcome');
   };
 
-  protected async handleUnfollow(event: UnfollowEvent) {
+  protected handleUnfollow = async (event: UnfollowEvent) => {
     console.log(`被封鎖： ${JSON.stringify(event)}`);
     return;
   };
 
-  protected async handleJoin(event: JoinEvent) {
+  protected handleJoin = async (event: JoinEvent) => {
     return this.replyText(event.replyToken, `Joined ${event.source.type}`);
-  }
+  };
 
-  protected async handleLeave(event: LeaveEvent) {
+  protected handleLeave = async (event: LeaveEvent) => {
     console.log(`Left ${event.source.type}`);
     return null;
-  }
+  };
 
-  protected async handlePostback(event: PostbackEvent) {
+  protected handlePostback = async (event: PostbackEvent) => {
     console.log(`postback: ${JSON.stringify(event)}`);
     return;
-  }
+  };
 
-  protected async handleBeacon(event: BeaconEvent) {
+  protected handleBeacon = async (event: BeaconEvent) => {
     return this.replyText(event.replyToken, `Got beacon: ${event.beacon.hwid}`);
-  }
+  };
 
   /**
    * 回覆文字訊息
