@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { MessageEvent } from '@line/bot-sdk/dist/types';
+import { MessageEvent, FollowEvent, UnfollowEvent } from '@line/bot-sdk/dist/types';
 
 interface LineConfig {
   channelAccessToken: string;
@@ -26,8 +26,14 @@ export declare class LineDialogflow {
   replyText: replyText;
 
   replyTextIntent: replyTextIntent;
+  
+  handleFollow: handleFollow;
 
+  handleUnfollow: UnfollowEvent;
 }
+
+type handleFollow = (event: FollowEvent) => Promise<any>;
+type handleUnfollow = (event: UnfollowEvent) => Promise<any>;
 
 type lineWebhook = (req: Request, res: Response) => Promise<any>;
 

@@ -118,6 +118,7 @@ export default class LineDialogflow {
   }
 
   protected async handleText(event: MessageEvent): Promise<any> {
+    console.log('text', event);
     return this.replyTextIntent(event);
   }
 

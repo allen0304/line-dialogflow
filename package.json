@@ -1,9 +1,6 @@
 {
   "name": "@allen0304/line-dialogflow",
-  "engines": {
-    "node": ">=8"
-  },
-  "version": "1.0.4",
+  "version": "1.0.6",
   "description": "Link LINE webhook with Dialogflow",
   "main": "lib/index.js",
   "scripts": {
@@ -40,5 +37,5 @@
     "lodash": "^4.17.15",
     "pb-util": "^0.1.2"
   },
-  "types": "./index.d.ts"
+  "types": "./src/index.d.ts"
 }
